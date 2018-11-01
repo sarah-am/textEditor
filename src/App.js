@@ -2,18 +2,23 @@ import React, { Component } from "react";
 import "./App.css";
 import StyleButton from "./StyleButton";
 
+const styles = {
+  bold: { fontWeight: "bold" },
+  italic: { fontStyle: "italic" },
+  underline: { textDecorationLine: "underline" }
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      styling: {
-        bold: false,
-        italic: false,
-        underline: false
-      },
+      bold: false,
+      italic: false,
+      underline: false,
       color: "black"
     };
 
+    this.stylings = ["bold", "italic", "underline"];
     this.colors = ["yellow", "blue", "red", "black", "purple"];
 
     this.setStyle = this.setStyle.bind(this);
@@ -21,9 +26,8 @@ class App extends Component {
   }
 
   setStyle(style) {
-    const styling = { ...this.state.styling };
-    styling[style] = !styling[style];
-    this.setState({ styling: styling });
+    const newStyle = !this.state[style];
+    this.setState({ [style]: newStyle });
   }
 
   chooseColor(color) {
@@ -31,19 +35,43 @@ class App extends Component {
   }
 
   render() {
+    let stylingBoxes = this.stylings.map(style => {
+      return (
+        <button
+          className={this.state[style] ? "btn btn-primary" : "btn btn-light"}
+          style={styles[style]}
+          key={style}
+          onClick={() => this.setStyle(style)}
+        >
+          {style}
+        </button>
+      );
+    });
+
     let colorBoxes = this.colors.map(color => {
-      return <button key={color} onClick={() => this.chooseColor(color)} />;
+      return (
+        <button
+          style={{ backgroundColor: color, height: 30, width: 30 }}
+          key={color}
+          onClick={() => this.chooseColor(color)}
+        />
+      );
     });
 
     return (
       <div className="App">
         <br />
-        <StyleButton select={this.setStyle} name="bold" />
-        <StyleButton select={this.setStyle} name="italic" />
-        <StyleButton select={this.setStyle} name="underline" />
+        {stylingBoxes}
         <br />
         <br />
-        <textarea />
+        <textarea
+          style={{
+            color: this.state.color,
+            fontWeight: this.state.bold ? "bold" : "",
+            fontStyle: this.state.italic ? "italic" : "",
+            textDecorationLine: this.state.underline ? "underline" : ""
+          }}
+        />
         <br />
         {colorBoxes}
       </div>
