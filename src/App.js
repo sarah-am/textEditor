@@ -8,23 +8,43 @@ const styles = {
 };
 
 class App extends Component {
+  state = {
+    color: "black",
+    bold: false,
+    italic: false,
+    underline: false
+  };
+
+  selectStyle = style => {
+    const newStyle = !this.state[style]; //takes the opposite value of this.state.style i.e. .bold, .italic, .underline etc.
+    this.setState({ [style]: newStyle });
+  };
+
+  // square bracket indicates key is a variable!!!
+
   render() {
     let stylings = ["bold", "italic", "underline"];
     let colors = ["yellow", "blue", "red", "black", "purple"];
 
     let stylingBoxes = stylings.map(style => {
       return (
-        <button style={styles[style]} key={style}>
+        <button
+          style={styles[style]}
+          key={style}
+          onClick={() => this.selectStyle(style)}
+        >
           {style}
         </button>
       );
     });
 
+    // mapping through the array "stylings". Hence, why the variable style needs to be
     let colorBoxes = colors.map(color => {
       return (
         <button
           style={{ backgroundColor: color, height: 30, width: 30 }}
           key={color}
+          onClick={() => this.setState({ color: color })}
         />
       );
     });
@@ -35,7 +55,14 @@ class App extends Component {
         {stylingBoxes}
         <br />
         <br />
-        <textarea />
+        <textarea
+          style={{
+            color: this.state.color,
+            fontWeight: this.state.bold ? "bold" : "",
+            fontStyle: this.state.italic ? "italic" : "",
+            textDecorationLine: this.state.underline ? "underline" : ""
+          }}
+        />
         <br />
         {colorBoxes}
       </div>
