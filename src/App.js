@@ -29,6 +29,7 @@ class App extends Component {
     let stylingBoxes = stylings.map(style => {
       return (
         <button
+          className={this.state[style] ? "btn btn-primary" : "btn btn-light"}
           style={styles[style]}
           key={style}
           onClick={() => this.selectStyle(style)}
@@ -38,7 +39,7 @@ class App extends Component {
       );
     });
 
-    // mapping through the array "stylings". Hence, why the variable style needs to be
+    // mapping through the array "stylings". Hence why the variable style needs to be [style]
     let colorBoxes = colors.map(color => {
       return (
         <button
